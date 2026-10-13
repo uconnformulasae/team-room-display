@@ -1,0 +1,6 @@
+# /etc/sudoers.d/display: lets the admin web app (service account "displayapp") run
+# exactly these two commands as root, with no password and no arguments (the "" means
+# "no arguments allowed"). Nothing else. Install (docs/SETUP.md):
+#   sudo install -m 0440 -o root -g root /srv/display/pi/sudoers-display /etc/sudoers.d/display
+#   sudo visudo -c
+displayapp ALL=(root) NOPASSWD: /usr/local/bin/display-restart "", /sbin/reboot ""

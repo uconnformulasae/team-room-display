@@ -1,0 +1,8 @@
+{
+  "competitions": [
+    {"name": "FSAE Michigan", "date": "2027-05-12"}
+  ],
+  "photo_interval_s": 15,
+  "font_scale": 1.0,
+  "banner_text": ""
+}

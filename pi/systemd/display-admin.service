@@ -1,0 +1,25 @@
+# The admin web app (Flask under gunicorn), on 127.0.0.1:8000 behind nginx.
+# Install: docs/SETUP.md. Logs: journalctl -u display-admin
+[Unit]
+Description=Team display admin app
+After=network.target
+# Never give up restarting it.
+StartLimitIntervalSec=0
+
+[Service]
+User=displayapp
+Group=displayapp
+WorkingDirectory=/srv/display
+EnvironmentFile=/etc/display/env
+ExecStart=/srv/display/.venv/bin/gunicorn --workers 2 --bind 127.0.0.1:8000 --timeout 120 --access-logfile - app:create_app()
+# Read the calendar and the photo folder and rewrite the display's JSON as soon as the app
+# starts. The "-" means a failure here is logged but doesn't stop the app. On slow Wi-Fi
+# that read can take a couple of minutes (a big batch of new photos), so allow 4.
+ExecStartPost=-/srv/display/.venv/bin/python scripts/publish.py
+TimeoutStartSec=240
+Restart=always
+RestartSec=3
+# (No NoNewPrivileges= here: the Status page's two buttons need sudo.)
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,8 @@
+# Nightly reboot, belt and braces against the browser slowly using more memory.
+# (A systemd timer instead of the root cron job in PLAN.md §8, like every other timer here.)
+[Unit]
+Description=Team display: nightly reboot
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl reboot

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Team logo">
+  <!-- Placeholder. Replace this file with the team's logo (TODO(owen) in docs/PLAN.md §2.2).
+       Any square-ish SVG or PNG works; if you use a PNG, update the two <img> tags in index.html. -->
+  <rect x="22" y="12" width="7" height="98" rx="3.5" fill="#a3b3c3"/>
+  <g transform="translate(29 16)">
+    <rect width="72" height="54" fill="#f3f6f9"/>
+    <g fill="#ff4d4f">
+      <rect x="18" width="18" height="18"/><rect x="54" width="18" height="18"/>
+      <rect y="18" width="18" height="18"/><rect x="36" y="18" width="18" height="18"/>
+      <rect x="18" y="36" width="18" height="18"/><rect x="54" y="36" width="18" height="18"/>
+    </g>
+  </g>
+</svg>

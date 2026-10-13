@@ -1,0 +1,7 @@
+#!/bin/sh
+# Restart the browser on the screen: close Chromium, and kiosk.sh (which runs it in a
+# loop) opens it again within a few seconds.
+#
+# The admin Status page runs this with sudo (see pi/sudoers-display). It is installed as
+# /usr/local/bin/display-restart, owned by root, so the display user can't change it.
+pkill -x chromium || true

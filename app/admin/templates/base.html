@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>{% block title %}Admin{% endblock %} · Team Display</title>
+  <link rel="stylesheet" href="{{ url_for('admin.static', filename='admin.css') }}">
+  <script src="{{ url_for('admin.static', filename='admin.js') }}" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="brand">Team Display</span>
+      {% if session.logged_in %}
+      {% set section = request.endpoint.split('.')[-1] if request.endpoint else '' %}
+      <nav class="nav" aria-label="Admin sections">
+        <a href="{{ url_for('admin.photos') }}" {% if section == 'photos' %}aria-current="page"{% endif %}>Photos</a>
+        <a href="{{ url_for('admin.settings') }}" {% if section == 'settings' %}aria-current="page"{% endif %}>Settings</a>
+        <a href="{{ url_for('admin.status') }}" {% if section == 'status' %}aria-current="page"{% endif %}>Status</a>
+        <a href="/" target="_blank" rel="noopener">View screen ↗</a>
+      </nav>
+      <form method="post" action="{{ url_for('auth.logout') }}" class="logout">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="link-button">Log out</button>
+      </form>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="page">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+      <p class="flash flash-{{ category }}" role="status">{{ message }}</p>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

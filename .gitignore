@@ -1,0 +1,20 @@
+# Secrets never go in git. On the Pi they live in /etc/display/env (docs/SETUP.md).
+.env*
+
+# The database is the schedule's source of truth. It lives on the Pi and in the
+# USB-stick backups, never in git. (*.db* also catches display.db-wal / -shm.)
+*.db*
+/data/
+
+# Generated on the Pi by publish() and by photo uploads
+web/data/
+web/photos/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# OS / editor clutter
+.DS_Store

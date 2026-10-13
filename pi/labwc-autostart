@@ -1,0 +1,12 @@
+# Copied to /home/display/.config/labwc/autostart (docs/SETUP.md). Raspberry Pi OS runs
+# this after its own /etc/xdg/labwc/autostart (desktop, taskbar, kanshi screen settings);
+# the full-screen browser covers those.
+#
+# Don't add a "swayidle" line here: that is how screen blanking gets switched on.
+
+# Optional: hide the mouse pointer when a mouse is plugged in. The display page already
+# hides it over the page. Needs `sudo apt install wtype` and pi/labwc-rc.xml copied to
+# ~/.config/labwc/rc.xml; then remove the # from the next line.
+# (sleep 5 && wtype -M alt -M logo -k h -m logo -m alt) &
+
+/srv/display/pi/kiosk.sh &

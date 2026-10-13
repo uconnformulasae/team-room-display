@@ -1,0 +1,12 @@
+# Copies the database and photos to the USB stick. Run by display-backup.timer, or by
+# hand: sudo systemctl start display-backup. Logs: journalctl -u display-backup
+[Unit]
+Description=Team display: back up the schedule and photos to the USB stick
+
+[Service]
+Type=oneshot
+User=displayapp
+Group=displayapp
+WorkingDirectory=/srv/display
+EnvironmentFile=/etc/display/env
+ExecStart=/srv/display/scripts/backup.sh

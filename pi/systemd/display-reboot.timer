@@ -1,0 +1,8 @@
+[Unit]
+Description=Team display: reboot every night at 04:05
+
+[Timer]
+OnCalendar=*-*-* 04:05:00
+
+[Install]
+WantedBy=timers.target

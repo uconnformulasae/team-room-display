@@ -1,0 +1,400 @@
+/* Admin pages. Mobile-first: everything is laid out for a phone (375 px wide) and
+   spreads out a little on wider screens. Tap targets are at least 44 px tall and form
+   fields use 16 px text so phones don't zoom in. */
+
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --line: #d5dce4;
+  --field-border: #64748b;
+  --primary: #1d4ed8;
+  --primary-soft: #e8efff;
+  --danger: #b42318;
+  --ok-bg: #e7f6ec;
+  --ok-text: #14532d;
+  --error-bg: #fdecea;
+  --error-text: #8a1c12;
+  --radius: 10px;
+
+  color-scheme: light;
+  accent-color: var(--primary);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  font: 1rem/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+h1 { margin: 0 0 1rem; font-size: 1.6rem; line-height: 1.2; text-wrap: balance; }
+h2 { font-size: 1.1rem; }
+p { text-wrap: pretty; }
+a { color: var(--primary); }
+
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.muted { color: var(--muted); }
+
+/* ---- Top bar ------------------------------------------------------------------ */
+
+.topbar {
+  color: #fff;
+  background: #0f172a;
+}
+
+.topbar-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  max-inline-size: 60rem;
+  margin-inline: auto;
+  padding: 0.5rem 1rem;
+}
+
+.brand {
+  margin-inline-end: auto;
+  font-weight: 700;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  order: 3;
+  inline-size: 100%;
+}
+
+.nav a,
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  color: #e2e8f0;
+  text-decoration: none;
+  background: none;
+  cursor: pointer;
+}
+
+.nav a[aria-current="page"] {
+  color: #0f172a;
+  background: #fff;
+  font-weight: 600;
+}
+
+.nav a:hover,
+.link-button:hover { text-decoration: underline; }
+
+.logout { margin: 0; }
+
+@media (min-width: 48rem) {
+  .nav { order: 0; inline-size: auto; }
+}
+
+/* ---- Page --------------------------------------------------------------------- */
+
+.page {
+  max-inline-size: 60rem;
+  margin-inline: auto;
+  padding: 1rem;
+}
+
+.card {
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.card.narrow {
+  max-inline-size: 26rem;
+  margin: 2rem auto;
+}
+
+.empty {
+  padding: 1.25rem;
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  text-align: center;
+}
+
+.flash {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  border-inline-start: 4px solid currentColor;
+}
+
+.flash-success { color: var(--ok-text); background: var(--ok-bg); }
+.flash-error   { color: var(--error-text); background: var(--error-bg); }
+.flash-info    { color: #1e3a8a; background: var(--primary-soft); }
+
+/* ---- Buttons ------------------------------------------------------------------ */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 48px;
+  padding: 0 1.1rem;
+  border: 1px solid var(--field-border);
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.button:hover { background: #eef2f6; }
+.button:disabled { opacity: 0.6; cursor: progress; }
+
+.button.primary {
+  border-color: var(--primary);
+  color: #fff;
+  background: var(--primary);
+}
+
+.button.primary:hover { background: #1e40af; }
+
+.button.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.button.danger:hover { background: var(--error-bg); }
+
+.button.small {
+  min-block-size: 44px;
+  padding: 0 0.8rem;
+}
+
+.button.wide { inline-size: 100%; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* ---- Forms -------------------------------------------------------------------- */
+
+.stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.1rem;
+  max-inline-size: 40rem;
+}
+
+fieldset {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+legend {
+  margin-block-end: 0.35rem;
+  padding: 0;
+  font-weight: 700;
+}
+
+.field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* never wider than the page, whatever is inside */
+  gap: 0.35rem;
+}
+
+.field label,
+.field legend {
+  font-weight: 600;
+}
+
+input:not([type="checkbox"], [type="radio"], [type="file"]),
+select,
+textarea {
+  inline-size: 100%;
+  min-block-size: 48px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--field-border);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--surface);
+}
+
+textarea { min-block-size: 5rem; resize: vertical; }
+
+input[type="file"] {
+  inline-size: 100%;
+  font: inherit;
+  padding: 0.5rem 0;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.error {
+  margin: 0;
+  font-weight: 600;
+  color: var(--error-text);
+}
+
+.has-error input,
+.has-error select,
+.has-error textarea,
+input:user-invalid {
+  border-color: var(--danger);
+  border-width: 2px;
+}
+
+/* ---- Photos ------------------------------------------------------------------- */
+
+.drive-card .drive-state { margin-block-start: 0; }
+.drive-card .actions { margin-block-end: 0; }
+
+.problem-list {
+  padding-inline-start: 1.25rem;
+  color: var(--error-text);
+  overflow-wrap: anywhere;
+}
+
+/* On a phone each photo is a compact row (thumbnail left, name right); on wider screens
+   they become a grid of cards. */
+.photo-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.photo-card {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  grid-template-areas:
+    "image name"
+    "image caption";
+  gap: 0.25rem 0.75rem;
+  align-content: start;
+  padding: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.photo-card img {
+  grid-area: image;
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #e2e8f0;
+}
+
+.photo-name,
+.photo-caption {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.photo-name { grid-area: name; font-size: 0.85rem; color: var(--muted); }
+.photo-caption { grid-area: caption; }
+
+@media (min-width: 40rem) {
+  .photo-grid { grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); }
+  .photo-card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "image" "name" "caption";
+  }
+}
+
+/* ---- Status ------------------------------------------------------------------- */
+
+.status-list {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.5rem 1rem;
+  margin: 0 0 1.5rem;
+}
+
+.status-list dt { font-weight: 600; }
+.status-list dd { margin: 0; overflow-wrap: anywhere; }
+
+.pill {
+  display: inline-block;
+  padding: 0.05rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.pill-ok      { color: var(--ok-text); background: var(--ok-bg); }
+.pill-bad     { color: var(--error-text); background: var(--error-bg); }
+.pill-unknown { color: var(--muted); background: #e2e8f0; }
+
+.audit {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.audit th,
+.audit td {
+  padding: 0.45rem 0.5rem;
+  border-block-end: 1px solid var(--line);
+  text-align: start;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 36rem) {
+  /* On a phone, each audit row becomes a small block: "when · who", then what happened. */
+  .audit thead { display: none; }
+  .audit tr {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0 0.75rem;
+    padding-block: 0.5rem;
+    border-block-end: 1px solid var(--line);
+  }
+  .audit td { padding: 0; border: 0; }
+  .audit td:nth-child(-n + 2) { font-size: 0.85rem; color: var(--muted); }
+  .audit td:nth-child(n + 3) { grid-column: 1 / -1; }
+  .audit td:nth-child(3) { font-weight: 600; }
+}

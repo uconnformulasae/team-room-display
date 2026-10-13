@@ -1,0 +1,84 @@
+{
+  "generated_at": "2026-09-22T14:10:00",
+  "synced_at": "2026-09-22T14:10:00",
+  "time_synced": true,
+  "events": [
+    {
+      "title": "Brake bias test",
+      "start": "2026-09-21T18:00",
+      "end": "2026-09-21T20:00",
+      "all_day": false,
+      "location": "Test lot"
+    },
+    {
+      "title": "Machine shop open hours",
+      "start": "2026-09-22T13:00",
+      "end": "2026-09-22T17:00",
+      "all_day": false,
+      "location": "Machine shop"
+    },
+    {
+      "title": "Suspension design review",
+      "start": "2026-09-22T16:00",
+      "end": "2026-09-22T17:00",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Weekly Meeting",
+      "start": "2026-09-24T18:30",
+      "end": "2026-09-24T20:00",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Design report due",
+      "start": "2026-09-25T23:59",
+      "end": null,
+      "all_day": false,
+      "location": ""
+    },
+    {
+      "title": "Career fair",
+      "start": "2026-09-29T00:00",
+      "end": null,
+      "all_day": true,
+      "location": "Student Union"
+    },
+    {
+      "title": "Weekly Meeting",
+      "start": "2026-10-01T18:30",
+      "end": "2026-10-01T20:00",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Testing weekend",
+      "start": "2026-10-02T00:00",
+      "end": "2026-10-04T00:00",
+      "all_day": true,
+      "location": "Test track"
+    },
+    {
+      "title": "Team BBQ",
+      "start": "2026-10-03T12:00",
+      "end": "2026-10-03T15:00",
+      "all_day": false,
+      "location": "Picnic pavilion"
+    },
+    {
+      "title": "Weekly Meeting",
+      "start": "2026-10-08T18:30",
+      "end": "2026-10-08T20:00",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Mock competition",
+      "start": "2026-10-17T00:00",
+      "end": "2026-10-18T00:00",
+      "all_day": true,
+      "location": "Test track"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-09-22 14:10",
+  "synced_at": "an hour ago",
+  "time_synced": "yes",
+  "events": [
+    {
+      "title": "Weekly Meeting",
+      "type": "meeting",
+      "start": "Sept 24 at 6:30pm",
+      "end": null,
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "",
+      "type": "party",
+      "start": "2026-09-25T18:00"
+    }
+  ]
+}

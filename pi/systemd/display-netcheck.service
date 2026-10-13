@@ -1,0 +1,9 @@
+# Restarts NetworkManager if the router hasn't answered for 3 checks in a row.
+# Runs as root; the script is a root-owned copy of scripts/netcheck.sh (docs/SETUP.md).
+# Logs: journalctl -u display-netcheck
+[Unit]
+Description=Team display: restart the network if it has been stuck for 15 minutes
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/display-netcheck

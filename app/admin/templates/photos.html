@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import drive_state %}
+{% block title %}Photos{% endblock %}
+{% block content %}
+<h1>Photos</h1>
+
+<p>
+  The screen shows the photos in the team's Google Drive folder. To add a photo, put it in the
+  folder; to take one off the screen, take it out of the folder. Changes reach the screen within
+  about a minute. A photo's description in Drive (File information → Details) is shown as its
+  caption. Photos in folders inside the folder are not used.
+</p>
+
+<section class="card drive-card">
+  <p class="drive-state">{{ drive_state(drive, photos) }}</p>
+  <div class="actions">
+    {% if folder_link %}
+    <a class="button" href="{{ folder_link }}" target="_blank" rel="noopener noreferrer">Open the folder in Google Drive ↗</a>
+    {% endif %}
+    <form method="post" action="{{ url_for('admin.read_drive') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="button primary">Read Drive now</button>
+    </form>
+  </div>
+</section>
+
+{% set problems = photos | rejectattr('filename') | list %}
+{% if problems %}
+<h2>Files the screen can't show</h2>
+<ul class="problem-list">
+  {% for photo in problems %}
+  <li><strong>{{ photo.name }}</strong>: {{ photo.problem }}</li>
+  {% endfor %}
+</ul>
+<p class="muted">Replace a file in the folder with a JPEG or a smaller copy and the Pi tries it again.</p>
+{% endif %}
+
+{% set shown = photos | selectattr('filename') | list %}
+<h2>On the screen ({{ shown | length }})</h2>
+{% if not shown %}
+<p class="empty">No photos on the screen yet. Until there are some, the screen shows the team logo.</p>
+{% endif %}
+<ul class="photo-grid">
+  {% for photo in shown %}
+  <li class="photo-card">
+    <img src="/photos/thumbs/{{ photo.filename }}" alt="{{ photo.caption or photo.name }}" loading="lazy">
+    <p class="photo-name">{{ photo.name }}</p>
+    {% if photo.caption %}<p class="photo-caption">{{ photo.caption }}</p>{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+<p class="muted">The screen uses the newest {{ max_photos }} photos in the folder, newest first.</p>
+{% endblock %}

@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "events.schema.json",
+  "title": "Team display events.json",
+  "description": "What publish() writes to web/data/events.json and what web/app.js reads. The events are a copy of the team's Google Calendar. Times are local wall-clock strings with no timezone (America/New_York on the Pi). See docs/SPEC.md.",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "synced_at",
+    "time_synced",
+    "events"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "generated_at": {
+      "description": "When the Pi last wrote this file. The display warns when this is over 60 minutes old.",
+      "$ref": "#/$defs/localSecond"
+    },
+    "synced_at": {
+      "description": "When the Google Calendar was last read successfully, or null if never. The display warns when this is over 60 minutes old.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/localSecond"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "time_synced": {
+      "description": "False when the Pi's clock is not NTP-synced; the display then hides the countdown.",
+      "type": "boolean"
+    },
+    "events": {
+      "description": "Sorted by start. Everything whose end (or start, if no end) is on or after yesterday 00:00.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/event"
+      }
+    }
+  },
+  "$defs": {
+    "localMinute": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}$"
+    },
+    "localSecond": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}$"
+    },
+    "event": {
+      "type": "object",
+      "required": [
+        "title",
+        "start",
+        "end",
+        "all_day",
+        "location"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start": {
+          "description": "Start time. For all-day events the time part is 00:00.",
+          "$ref": "#/$defs/localMinute"
+        },
+        "end": {
+          "description": "End time, or null. For all-day events: the LAST day (inclusive), at 00:00.",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/localMinute"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "all_day": {
+          "type": "boolean"
+        },
+        "location": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

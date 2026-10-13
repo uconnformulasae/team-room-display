@@ -1,0 +1,12 @@
+# Admin app (runs on the Pi under gunicorn)
+flask>=3.1,<4
+flask-wtf>=1.2,<2
+gunicorn>=23
+pillow>=11
+pillow-heif>=0.22      # lets iPhone HEIC photos be uploaded; the app still runs without it
+jsonschema>=4.20,<5    # publish() checks events.json against fixtures/events.schema.json
+icalendar>=6.1,<8              # reads the Google Calendar feed (pure Python: fine on the Pi)
+recurring-ical-events>=3,<4    # expands repeating events, skipped and moved weeks included
+
+# Tests
+pytest>=8

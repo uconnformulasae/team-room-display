@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!-- Optional. Copy to /home/display/.config/labwc/rc.xml to add one key binding,
+     Alt+Super+H, that hides the mouse pointer. labwc-autostart can "press" it at startup
+     with wtype. Raspberry Pi OS merges this with its own labwc settings. -->
+<labwc_config>
+  <keyboard>
+    <keybind key="A-W-h">
+      <action name="HideCursor"/>
+    </keybind>
+  </keyboard>
+</labwc_config>

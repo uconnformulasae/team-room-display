@@ -1,0 +1,287 @@
+{
+  "generated_at": "2026-09-22T14:10:00",
+  "synced_at": "2026-09-22T14:10:00",
+  "time_synced": true,
+  "events": [
+    {
+      "title": "Weekly Meeting",
+      "start": "2026-09-22T15:00",
+      "end": "2026-09-22T16:30",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Aero subteam",
+      "start": "2026-09-22T18:30",
+      "end": "2026-09-22T20:00",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Powertrain subteam",
+      "start": "2026-09-23T12:00",
+      "end": "2026-09-23T13:30",
+      "all_day": false,
+      "location": "Engine bay"
+    },
+    {
+      "title": "DAQ subteam",
+      "start": "2026-09-24T16:30",
+      "end": "2026-09-24T18:00",
+      "all_day": false,
+      "location": "Electronics lab"
+    },
+    {
+      "title": "Chassis subteam",
+      "start": "2026-09-24T19:00",
+      "end": "2026-09-24T20:30",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Design review",
+      "start": "2026-09-25T15:00",
+      "end": "2026-09-25T16:30",
+      "all_day": false,
+      "location": "Room 212"
+    },
+    {
+      "title": "Sponsor call",
+      "start": "2026-09-26T18:30",
+      "end": "2026-09-26T20:00",
+      "all_day": false,
+      "location": ""
+    },
+    {
+      "title": "Machine shop hours",
+      "start": "2026-09-27T12:00",
+      "end": "2026-09-27T13:30",
+      "all_day": false,
+      "location": "Machine shop"
+    },
+    {
+      "title": "Bake sale fundraiser",
+      "start": "2026-09-27T19:00",
+      "end": "2026-09-27T20:30",
+      "all_day": false,
+      "location": "Student Union"
+    },
+    {
+      "title": "Cost report section due",
+      "start": "2026-09-28T16:30",
+      "end": null,
+      "all_day": false,
+      "location": ""
+    },
+    {
+      "title": "Weekly Meeting",
+      "start": "2026-09-29T15:00",
+      "end": "2026-09-29T16:30",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Aero subteam",
+      "start": "2026-09-29T18:30",
+      "end": "2026-09-29T20:00",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Powertrain subteam",
+      "start": "2026-09-30T12:00",
+      "end": "2026-09-30T13:30",
+      "all_day": false,
+      "location": "Engine bay"
+    },
+    {
+      "title": "Chassis subteam",
+      "start": "2026-10-01T19:00",
+      "end": "2026-10-01T20:30",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Design review",
+      "start": "2026-10-02T15:00",
+      "end": "2026-10-02T16:30",
+      "all_day": false,
+      "location": "Room 212"
+    },
+    {
+      "title": "DAQ subteam",
+      "start": "2026-10-02T16:30",
+      "end": "2026-10-02T18:00",
+      "all_day": false,
+      "location": "Electronics lab"
+    },
+    {
+      "title": "Sponsor call",
+      "start": "2026-10-03T18:30",
+      "end": "2026-10-03T20:00",
+      "all_day": false,
+      "location": ""
+    },
+    {
+      "title": "Machine shop hours",
+      "start": "2026-10-04T12:00",
+      "end": "2026-10-04T13:30",
+      "all_day": false,
+      "location": "Machine shop"
+    },
+    {
+      "title": "Cost report section due",
+      "start": "2026-10-05T16:30",
+      "end": null,
+      "all_day": false,
+      "location": ""
+    },
+    {
+      "title": "Bake sale fundraiser",
+      "start": "2026-10-05T19:00",
+      "end": "2026-10-05T20:30",
+      "all_day": false,
+      "location": "Student Union"
+    },
+    {
+      "title": "Weekly Meeting",
+      "start": "2026-10-06T15:00",
+      "end": "2026-10-06T16:30",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Powertrain subteam",
+      "start": "2026-10-07T12:00",
+      "end": "2026-10-07T13:30",
+      "all_day": false,
+      "location": "Engine bay"
+    },
+    {
+      "title": "Aero subteam",
+      "start": "2026-10-07T18:30",
+      "end": "2026-10-07T20:00",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Chassis subteam",
+      "start": "2026-10-08T19:00",
+      "end": "2026-10-08T20:30",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "DAQ subteam",
+      "start": "2026-10-09T16:30",
+      "end": "2026-10-09T18:00",
+      "all_day": false,
+      "location": "Electronics lab"
+    },
+    {
+      "title": "Design review",
+      "start": "2026-10-10T15:00",
+      "end": "2026-10-10T16:30",
+      "all_day": false,
+      "location": "Room 212"
+    },
+    {
+      "title": "Sponsor call",
+      "start": "2026-10-10T18:30",
+      "end": "2026-10-10T20:00",
+      "all_day": false,
+      "location": ""
+    },
+    {
+      "title": "Machine shop hours",
+      "start": "2026-10-11T12:00",
+      "end": "2026-10-11T13:30",
+      "all_day": false,
+      "location": "Machine shop"
+    },
+    {
+      "title": "Bake sale fundraiser",
+      "start": "2026-10-12T19:00",
+      "end": "2026-10-12T20:30",
+      "all_day": false,
+      "location": "Student Union"
+    },
+    {
+      "title": "Weekly Meeting",
+      "start": "2026-10-13T15:00",
+      "end": "2026-10-13T16:30",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Cost report section due",
+      "start": "2026-10-13T16:30",
+      "end": null,
+      "all_day": false,
+      "location": ""
+    },
+    {
+      "title": "Aero subteam",
+      "start": "2026-10-14T18:30",
+      "end": "2026-10-14T20:00",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "Powertrain subteam",
+      "start": "2026-10-15T12:00",
+      "end": "2026-10-15T13:30",
+      "all_day": false,
+      "location": "Engine bay"
+    },
+    {
+      "title": "Chassis subteam",
+      "start": "2026-10-15T19:00",
+      "end": "2026-10-15T20:30",
+      "all_day": false,
+      "location": "Team Room"
+    },
+    {
+      "title": "DAQ subteam",
+      "start": "2026-10-16T16:30",
+      "end": "2026-10-16T18:00",
+      "all_day": false,
+      "location": "Electronics lab"
+    },
+    {
+      "title": "Design review",
+      "start": "2026-10-17T15:00",
+      "end": "2026-10-17T16:30",
+      "all_day": false,
+      "location": "Room 212"
+    },
+    {
+      "title": "Machine shop hours",
+      "start": "2026-10-18T12:00",
+      "end": "2026-10-18T13:30",
+      "all_day": false,
+      "location": "Machine shop"
+    },
+    {
+      "title": "Sponsor call",
+      "start": "2026-10-18T18:30",
+      "end": "2026-10-18T20:00",
+      "all_day": false,
+      "location": ""
+    },
+    {
+      "title": "Bake sale fundraiser",
+      "start": "2026-10-19T19:00",
+      "end": "2026-10-19T20:30",
+      "all_day": false,
+      "location": "Student Union"
+    },
+    {
+      "title": "Cost report section due",
+      "start": "2026-10-20T16:30",
+      "end": null,
+      "all_day": false,
+      "location": ""
+    }
+  ]
+}

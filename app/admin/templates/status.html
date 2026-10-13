@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}Status{% endblock %}
+{% from '_macros.html' import state_pill, drive_state %}
+{% block content %}
+<h1>Status</h1>
+
+{% if config.SECRET_KEY_IS_TEMPORARY %}
+<p class="flash flash-error">SECRET_KEY is not set, so everyone is logged out whenever the admin app
+  restarts. Add it to /etc/display/env (docs/SETUP.md).</p>
+{% endif %}
+
+{% if database_error %}
+<p class="flash flash-error">The Pi cannot open its database ({{ database_error }}). If the SD card below
+  is full, free some space and reload. The screen is not affected.</p>
+{% endif %}
+
+<dl class="status-list">
+  <dt>Calendar</dt>
+  <dd>
+    {% if not calendar %}
+      <span class="pill pill-unknown">unknown (no database)</span>
+    {% elif calendar.ok %}
+      {{ state_pill(true, 'OK') }} {{ calendar.calendar_name or 'Google Calendar' }}: {{ event_count }} events,
+      last read {{ calendar.synced_at[:16] | replace('T', ' ') }}
+    {% elif calendar.checked_at %}
+      {{ state_pill(false, 'Not read') }} {{ calendar.message }}
+      {% if calendar.synced_at %}
+        Showing the {{ event_count }} events from {{ calendar.synced_at[:16] | replace('T', ' ') }}.
+      {% endif %}
+    {% else %}
+      <span class="pill pill-unknown">The calendar has not been read yet</span>
+    {% endif %}
+  </dd>
+
+  <dt>Photos</dt>
+  <dd>{{ drive_state(drive, photos) }} <a href="{{ url_for('admin.photos') }}">Details</a></dd>
+
+  <dt>Screen files</dt>
+  <dd>
+    {% if info.published %}
+      Written {{ info.published }} ({{ 'just now' if info.published_minutes < 1 else info.published_minutes ~ ' min ago' }})
+      {% if info.published_minutes > 60 %}<span class="pill pill-bad">over an hour old</span>{% endif %}
+    {% else %}<span class="pill pill-bad">never written</span>{% endif %}
+  </dd>
+
+  <dt>Last backup</dt>
+  <dd>
+    {% if info.backup %}
+      {{ state_pill(info.backup.ok, 'OK', 'Backup failed') }} {{ info.backup.at }}: {{ info.backup.message }}
+    {% else %}<span class="pill pill-unknown">No backup has run yet</span>{% endif %}
+  </dd>
+
+  <dt>Browser</dt>
+  <dd>{{ state_pill(info.chromium, 'Chromium is running', 'Chromium is not running') }}</dd>
+
+  {% for name, state in info.services.items() %}
+  <dt>{{ name }}</dt>
+  <dd>{{ state_pill(none if state == 'unknown' else state == 'active', state) }}</dd>
+  {% endfor %}
+
+  <dt>Up for</dt>
+  <dd>{{ info.uptime or 'unknown' }}</dd>
+
+  <dt>SD card</dt>
+  <dd>{{ info.disk or 'unknown' }}{% if info.disk_low %} <span class="pill pill-bad">almost full</span>{% endif %}</dd>
+
+  <dt>CPU temperature</dt>
+  <dd>{{ info.temperature or 'unknown' }}</dd>
+
+  <dt>Power</dt>
+  <dd>{{ info.power or 'unknown' }}</dd>
+</dl>
+
+<div class="actions">
+  <form method="post" action="{{ url_for('admin.read_calendar') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="button primary">Read calendar now</button>
+  </form>
+  <form method="post" action="{{ url_for('admin.restart_display') }}"
+        data-confirm="Restart the browser on the screen? It comes back in about 10 seconds.">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="button">Restart display</button>
+  </form>
+  <form method="post" action="{{ url_for('admin.reboot') }}"
+        data-confirm="Reboot the Pi? The screen and these pages will be gone for about 2 minutes.">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="button danger">Reboot Pi</button>
+  </form>
+</div>
+
+<h2>Recent changes</h2>
+{% if audit %}
+<table class="audit">
+  <thead><tr><th>When</th><th>Who</th><th>What</th><th>Details</th></tr></thead>
+  <tbody>
+    {% for row in audit %}
+    <tr>
+      <td>{{ row.at[:16] | replace('T', ' ') }}</td>
+      <td>{{ row.who }}</td>
+      <td>{{ row.action }}</td>
+      <td>{{ row.target or '' }}{% if row.target and row.detail %}: {% endif %}{{ row.detail or '' }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">Nothing yet.</p>
+{% endif %}
+{% endblock %}

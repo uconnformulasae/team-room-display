@@ -1,0 +1,456 @@
+/* Team room display.
+
+   Sizes use --u: 1% of the screen's short side, times font_scale from settings.json.
+   The page looks the same on any TV in either orientation, and one setting tunes the
+   text size for the room. The layout rules are in docs/SPEC.md. Cheap for the Pi's GPU:
+   flat colors, no blur, no big shadows; only opacity animates. */
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("fonts/fira-sans-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fira Sans";
+  src: url("fonts/fira-sans-latin-600-normal.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fira Sans";
+  src: url("fonts/fira-sans-latin-800-normal.woff2") format("woff2");
+  font-weight: 800;
+  font-display: swap;
+}
+
+:root {
+  --font-scale: 1; /* app.js sets this from settings.json */
+  --u: calc(1vmin * var(--font-scale));
+  --pad: 2.4vmin;
+  --gap: 1.8vmin;
+  --radius: 1.4vmin;
+
+  /* --accent is the team color. Change it here (TODO(owen) in docs/PLAN.md §2.2). */
+  --accent: #ff4d4f;
+  --bg: #0b0f14;
+  --panel: #131a22;
+  --panel-2: #1a232d;
+  --line: #2a3747;
+  --text: #f3f6f9;
+  --muted: #a3b3c3;
+  --ok: #4cd68a;
+  --warn: #ffc53d;
+  --bad: #ff6b6b;
+
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+p, h1, h2, ol, figure { margin: 0; padding: 0; }
+
+html {
+  block-size: 100%;
+  overflow: hidden; /* a kiosk never scrolls */
+  cursor: none;     /* no mouse pointer over the page */
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  block-size: 100%;
+  font-family: "Fira Sans", system-ui, sans-serif;
+  font-size-adjust: from-font; /* a fallback font keeps the same visual size */
+  line-height: 1.25;
+  color: var(--text);
+  background: var(--bg);
+}
+
+/* ---- Page grid ---------------------------------------------------------------- */
+
+.screen {
+  display: grid;
+  inline-size: 100%;
+  block-size: 100dvh;
+  padding: var(--pad);
+  gap: var(--gap);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "top      top"
+    "hero     photos"
+    "upcoming photos"
+    "bottom   bottom";
+}
+
+@media (orientation: portrait) {
+  .screen {
+    grid-template-columns: minmax(0, 1fr);
+    /* The list takes the height it needs (rows that don't fit are dropped by app.js);
+       the photo gets the rest, but never less than a quarter of the screen. */
+    grid-template-rows: auto auto minmax(0, auto) minmax(25vh, 1fr) auto;
+    grid-template-areas: "top" "hero" "upcoming" "photos" "bottom";
+  }
+}
+
+.top      { grid-area: top; }
+.hero     { grid-area: hero; }
+.upcoming { grid-area: upcoming; }
+.photos   { grid-area: photos; }
+.bottom   { grid-area: bottom; }
+
+/* ---- Header: logo, countdown, clock ------------------------------------------- */
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 3);
+}
+
+.logo {
+  display: block;
+  flex: none;
+  block-size: calc(var(--u) * 9);
+  inline-size: auto;
+}
+
+.countdown {
+  flex: 1;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: calc(var(--u) * 3.6);
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* Two competitions (one per car): two smaller lines in the room of one. */
+.countdown.is-pair { font-size: calc(var(--u) * 3.0); }
+
+.countdown li {
+  display: flex;
+  align-items: baseline;
+}
+
+.countdown-name {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.countdown-when {
+  flex: none;
+  white-space: pre; /* keeps the spaces around "in" */
+}
+
+.countdown strong {
+  font-size: 1.3em;
+  font-weight: 800;
+  color: var(--warn); /* the countdown's number: the same yellow as the warnings */
+  font-variant-numeric: tabular-nums;
+}
+
+.clock {
+  flex: none;
+  margin-inline-start: auto;
+  text-align: end;
+}
+
+.clock-time {
+  font-size: calc(var(--u) * 7.5);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.clock-ampm {
+  margin-inline-start: 0.15em;
+  font-size: 0.45em;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.clock-date {
+  margin-block-start: calc(var(--u) * 0.7);
+  font-size: calc(var(--u) * 2.6);
+  color: var(--muted);
+}
+
+/* ---- Next up (hero card) ------------------------------------------------------ */
+
+.hero {
+  display: grid;
+  gap: calc(var(--u) * 1.1);
+  min-inline-size: 0;
+  padding: calc(var(--u) * 2.6) calc(var(--u) * 3);
+  border-inline-start: calc(var(--u) * 0.8) solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.hero-kicker {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.6);
+  font-size: calc(var(--u) * 2.4);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.hero.is-now .hero-kicker::before {
+  content: "";
+  flex: none;
+  inline-size: 0.6em;
+  block-size: 0.6em;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% { opacity: 0.25; }
+}
+
+.hero-title {
+  font-size: calc(var(--u) * 6.8);
+  font-weight: 800;
+  line-height: 1.05;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: clip;
+}
+
+.hero-when {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: calc(var(--u) * 2.2);
+}
+
+.hero-relative {
+  font-size: calc(var(--u) * 4.6);
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.hero-absolute {
+  font-size: calc(var(--u) * 3.4);
+  font-weight: 600;
+}
+
+.hero-where {
+  font-size: calc(var(--u) * 3);
+  color: var(--muted);
+  white-space: nowrap;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero.is-empty,
+.hero.is-loading {
+  border-inline-start-color: var(--line);
+}
+
+.hero.is-empty .hero-kicker,
+.hero.is-loading .hero-kicker,
+.hero.is-loading .hero-title {
+  color: var(--muted);
+}
+
+.hero.is-empty .hero-absolute {
+  font-size: calc(var(--u) * 3);
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* ---- Upcoming list ------------------------------------------------------------ */
+
+.upcoming {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.8);
+  min-block-size: 0;
+  overflow: clip; /* app.js drops rows that would not fit */
+}
+
+.section-label {
+  font-size: calc(var(--u) * 2.3);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* One grid for all rows, so the day / time / title columns line up. */
+.agenda {
+  display: grid;
+  grid-template-columns: max-content max-content minmax(0, 1fr);
+  column-gap: calc(var(--u) * 2.2);
+  list-style: none;
+}
+
+.agenda-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: max-content max-content minmax(0, 1fr);
+  grid-template-columns: subgrid;
+  align-items: center;
+  padding-block: calc(var(--u) * 0.6);
+  font-size: calc(var(--u) * 3.1);
+  line-height: 1.2;
+  border-block-start: 1px solid transparent;
+}
+
+.agenda-row.first-of-day:not(:first-child) {
+  border-block-start-color: var(--line);
+}
+
+.agenda-day {
+  font-weight: 800;
+}
+
+.agenda-time {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.agenda-title {
+  min-inline-size: 0;
+  font-weight: 600;
+  white-space: nowrap;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.agenda-location {
+  font-size: 0.85em;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.agenda-more {
+  padding-block-start: calc(var(--u) * 0.4);
+  font-size: calc(var(--u) * 2.6);
+  color: var(--muted);
+}
+
+/* ---- Photos ------------------------------------------------------------------- */
+
+.photos {
+  position: relative;
+  min-block-size: 0;
+  border-radius: var(--radius);
+  overflow: clip;
+  background: var(--panel-2);
+}
+
+.photo,
+.photo-placeholder {
+  position: absolute;
+  inset: 0;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+}
+
+.photo {
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+.photo.is-visible {
+  z-index: 1; /* the incoming photo fades in on top of the outgoing one */
+  opacity: 1;
+}
+
+.photo-placeholder {
+  inline-size: 36%;
+  block-size: 36%;
+  margin: auto;
+}
+
+.photo-caption {
+  position: absolute;
+  z-index: 2; /* above both photos */
+  inset-inline: 0;
+  inset-block-end: 0;
+  padding: calc(var(--u) * 5) calc(var(--u) * 2.4) calc(var(--u) * 1.8);
+  font-size: calc(var(--u) * 2.6);
+  font-weight: 600;
+  text-wrap: balance;
+  background: linear-gradient(transparent, rgb(0 0 0 / 0.75));
+}
+
+/* ---- Banner and status line --------------------------------------------------- */
+
+.bottom {
+  min-inline-size: 0;
+  display: grid;
+  gap: calc(var(--u) * 1.2);
+}
+
+.banner {
+  min-inline-size: 0;
+  overflow-wrap: anywhere; /* a long word or a link in the banner wraps instead of pushing the page wide */
+  padding: calc(var(--u) * 1.2) calc(var(--u) * 2.4);
+  border-inline-start: calc(var(--u) * 0.8) solid var(--accent);
+  border-radius: var(--radius);
+  font-size: calc(var(--u) * 3.3);
+  font-weight: 600;
+  background: color-mix(in srgb, var(--accent) 20%, var(--panel));
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: clip;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.2);
+  font-size: calc(var(--u) * 2.1);
+  color: var(--muted);
+}
+
+.status-dot {
+  flex: none;
+  inline-size: calc(var(--u) * 1.3);
+  block-size: calc(var(--u) * 1.3);
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.status-dot[data-state="ok"]      { background: var(--ok); }
+.status-dot[data-state="stale"]   { background: var(--warn); }
+.status-dot[data-state="offline"] { background: var(--bad); }
+
+.stale-badge {
+  padding: 0.15em 0.7em;
+  border-radius: 999px;
+  font-weight: 800;
+  color: #1f1600;
+  background: var(--warn);
+}
+
+.stale-badge.is-offline {
+  color: #2b0000;
+  background: var(--bad);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo { transition: none; }
+  .hero.is-now .hero-kicker::before { animation: none; }
+}

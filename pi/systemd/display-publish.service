@@ -1,0 +1,26 @@
+# Reads the team's Google Calendar and Drive photo folder every 30 seconds and rewrites
+# web/data/*.json when something changed (and every 5 minutes anyway). Always on, so an
+# event added to or removed from the calendar, or a photo put in or taken out of the
+# folder, reaches the screen within about a minute with nobody doing anything.
+# Install: docs/SETUP.md. Logs: journalctl -u display-publish
+#
+# It waits for the network at boot, but does not need it: without one, each read gives up
+# within 20 seconds and the files are written from what was saved last time.
+[Unit]
+Description=Team display: read the calendar and photo folder every 30 s and rewrite the screen's data files
+After=network-online.target
+Wants=network-online.target
+# Never give up restarting it.
+StartLimitIntervalSec=0
+
+[Service]
+User=displayapp
+Group=displayapp
+WorkingDirectory=/srv/display
+EnvironmentFile=/etc/display/env
+ExecStart=/srv/display/.venv/bin/python scripts/publish.py --every 30
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

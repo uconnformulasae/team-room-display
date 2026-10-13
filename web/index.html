@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- This page only ever loads files from the Pi itself (no fonts, scripts or images from
+       the internet), and the browser enforces that. -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self'; font-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Team Room Display</title>
+  <link rel="preload" href="fonts/fira-sans-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="screen">
+    <header class="top">
+      <img class="logo" src="img/logo.svg" alt="Team logo">
+      <ul class="countdown" id="countdown" hidden></ul>
+      <div class="clock">
+        <p class="clock-time" id="clock-time"><span id="clock-hm"></span><span class="clock-ampm" id="clock-ampm"></span></p>
+        <p class="clock-date" id="clock-date"></p>
+      </div>
+    </header>
+
+    <section class="hero" id="hero">
+      <p class="hero-kicker"><span id="hero-kicker">Next up</span></p>
+      <h1 class="hero-title" id="hero-title">Loading the schedule…</h1>
+      <p class="hero-when"><span class="hero-relative" id="hero-relative"></span><span class="hero-absolute" id="hero-absolute"></span></p>
+      <p class="hero-where" id="hero-where" hidden></p>
+    </section>
+
+    <section class="upcoming" id="upcoming" hidden>
+      <h2 class="section-label">Coming up</h2>
+      <ol class="agenda" id="agenda"></ol>
+      <p class="agenda-more" id="agenda-more" hidden></p>
+    </section>
+
+    <figure class="photos" id="photos">
+      <img class="photo" id="photo-a" alt="">
+      <img class="photo" id="photo-b" alt="">
+      <img class="photo-placeholder" id="photo-placeholder" src="img/logo.svg" alt="">
+      <figcaption class="photo-caption" id="photo-caption" hidden></figcaption>
+    </figure>
+
+    <div class="bottom" id="bottom" hidden>
+      <p class="banner" id="banner" hidden></p>
+      <!-- Only shown when something is wrong (old data, or data that won't load). -->
+      <p class="status" id="status" hidden>
+        <span class="status-dot" id="status-dot" data-state="waiting"></span>
+        <span class="stale-badge" id="stale-badge" hidden></span>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

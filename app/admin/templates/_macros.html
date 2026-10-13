@@ -1,0 +1,39 @@
+{# A labelled form field with an optional hint and its error messages. Extra keyword
+   arguments become HTML attributes on the input, e.g. field(form.title, maxlength=100).
+   (WTForms leaves out an attribute whose value is False.) #}
+{% macro field(f, hint=None) %}
+{%- set hint_id = f.id ~ '-hint' if hint else '' -%}
+{%- set error_id = f.id ~ '-error' if f.errors else '' -%}
+{%- set described_by = (hint_id ~ ' ' ~ error_id) | trim -%}
+<div class="field{% if f.errors %} has-error{% endif %}">
+  {{ f.label }}
+  {{ f(aria_describedby=described_by or False, aria_invalid='true' if f.errors else False, **kwargs) }}
+  {% if hint %}<p class="hint" id="{{ hint_id }}">{{ hint }}</p>{% endif %}
+  {% if f.errors %}<p class="error" id="{{ error_id }}">{{ f.errors | join(' ') }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{# A status pill: green, red, or grey when nobody knows. #}
+{% macro state_pill(good, text, bad_text=None) -%}
+  {%- if good is none -%}<span class="pill pill-unknown">unknown</span>
+  {%- elif good -%}<span class="pill pill-ok">{{ text }}</span>
+  {%- else -%}<span class="pill pill-bad">{{ bad_text or text }}</span>{%- endif -%}
+{%- endmacro %}
+
+{# How the last read of the Drive folder went. `photos` is every row of the photos table. #}
+{% macro drive_state(drive, photos) -%}
+  {%- set shown = photos | selectattr('filename') | list | length -%}
+  {%- if not drive -%}
+    <span class="pill pill-unknown">unknown (no database)</span>
+  {%- elif drive.ok -%}
+    {{ state_pill(true, 'OK') }} {{ drive.folder_name or 'Google Drive' }}: {{ drive.message }},
+    last read {{ drive.synced_at[:16] | replace('T', ' ') }}
+  {%- elif drive.checked_at -%}
+    {{ state_pill(false, 'Not read') }} {{ drive.message }}
+    {% if drive.synced_at %}
+      Showing the {{ shown }} photo{{ '' if shown == 1 else 's' }} from {{ drive.synced_at[:16] | replace('T', ' ') }}.
+    {% endif %}
+  {%- else -%}
+    <span class="pill pill-unknown">The photo folder has not been read yet</span>
+  {%- endif -%}
+{%- endmacro %}
